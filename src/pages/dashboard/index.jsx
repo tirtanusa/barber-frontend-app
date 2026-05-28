@@ -76,13 +76,12 @@ const Dashboard = () => {
                 ))}
               </div>
 
-              <a
-                href="#hero"
-                onClick={(e) => handleNavClick(e, "#hero")}
+              <Link
+                to='/booking'
                 className="nav-link"
               >
                 Book Now
-              </a>
+              </Link>
             </div>
           </div>
           <div className="flex items-center gap-8 mt-2 md:mt-4 px-4 md:px-6">

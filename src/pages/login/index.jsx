@@ -40,7 +40,7 @@ const Login = () => {
                 password,
             });
 
-            await login(res.data.token); // AuthProvider handle sisanya
+            await login(res.data.data.access_token); // AuthProvider handle sisanya
             navigate("/");
 
         } catch (err) {

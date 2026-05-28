@@ -1,5 +1,8 @@
 import { AuthContext } from "./AuthContext";
 import { useState, useEffect } from "react";
+import axios from "axios";
+
+const BASE = import.meta.env.VITE_BASE_URL;
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -7,19 +10,26 @@ export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
     const [isLoading, setIsLoading] = useState(true);
 
+    // fetch user data helper
+    const fetchMe = async (tokenData) => {
+        const res = await axios.get(`${BASE}/auth/me`, {
+            headers: {
+                Authorization: `Bearer ${tokenData}`,
+                Accept: "application/json",
+            },
+        });
+        console.log(res.data.data)
+        return res.data;
+    };
+
+    // on mount — restore session jika token ada di localStorage
     useEffect(() => {
         if (!token) {
             setIsLoading(false);
             return;
         }
 
-        fetch(`api/me`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json",
-            },
-        })
-            .then((res) => res.json())
+        fetchMe(token)
             .then((json) => {
                 if (json.success) {
                     setUser(json.data);
@@ -33,21 +43,16 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (tokenData) => {
+        console.log("tokenData:", tokenData); // cek apakah ada isinya
+        localStorage.setItem("token", tokenData);
         setToken(tokenData);
         setIsLoggedIn(true);
-        localStorage.setItem("token", tokenData);
 
         try {
-            const res = await fetch(`api/me`, {
-                headers: {
-                    Authorization: `Bearer ${tokenData}`,
-                    Accept: "application/json",
-                },
-            });
-            const json = await res.json();
+            const json = await fetchMe(tokenData);
             if (json.success) setUser(json.data);
         } catch (err) {
-            console.error(err);
+            console.error("Failed to fetch user after login:", err);
         } finally {
             setIsLoading(false);
         }
