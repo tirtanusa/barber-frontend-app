@@ -1,5 +1,6 @@
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom"
 
 // Skala font berdasarkan panjang kata terpanjang di nama
 const getNameFontSize = (name) => {
@@ -126,9 +127,9 @@ const BarberCard = ({ barbers = [] }) => {
 
           {/* Buttons */}
           <div className="flex items-center gap-3 w-full max-w-[280px] md:max-w-none">
-            <button className="font-mono text-white border border-white rounded-full py-2 text-[13px] hover:bg-white hover:text-black transition-colors duration-200 flex-1">
-              Book
-            </button>
+            <Link to="/booking" className="flex justify-center items-center font-mono text-white border border-white rounded-full py-2 text-[13px] hover:bg-white hover:text-black transition-colors duration-200 flex-1">
+              Book an Appointment
+            </Link>
 
             {/* Prev / Next cycling */}
             {barbers.length > 1 && (

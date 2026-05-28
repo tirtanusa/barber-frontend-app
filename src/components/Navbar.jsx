@@ -1,5 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -53,13 +54,12 @@ const Navbar = () => {
               {link.label}
             </a>
           ))}
-          <a
-            href="#hero"
-            onClick={(e) => handleNavClick(e, "#hero")}
+          <Link
+            to="/booking"
             className="bg-white text-tertiary px-4 py-2 rounded-sm font-inter text-sm hover:bg-secondary hover:text-neutral transition-colors duration-200 cursor-pointer"
           >
             BOOK NOW
-          </a>
+          </Link>
         </div>
 
         {/* Mobile menu toggle */}
