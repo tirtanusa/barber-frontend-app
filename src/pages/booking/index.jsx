@@ -1,13 +1,12 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, Star, Clock, Scissors, User, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Star, Clock, User } from "lucide-react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import useReveal from "../../hooks/useReveal";
 
 const BASE = import.meta.env.VITE_BASE_URL;
 
-// ─── helpers ────────────────────────────────────────────────────────────────
 const addMinutes = (timeStr, minutes) => {
     if (!timeStr || minutes == null || isNaN(Number(minutes))) return "—";
     const parts = String(timeStr).split(":");
@@ -21,7 +20,6 @@ const addMinutes = (timeStr, minutes) => {
 
 const todayISO = () => new Date().toISOString().split("T")[0];
 
-// ─── step indicator ──────────────────────────────────────────────────────────
 const STEPS = ["Barber", "Service", "Schedule", "Confirm"];
 
 const StepBar = ({ current }) => (
@@ -29,22 +27,20 @@ const StepBar = ({ current }) => (
         {STEPS.map((label, i) => (
             <div key={label} className="flex items-center flex-1 last:flex-none">
                 <div className="flex flex-col items-center gap-1">
-                    <div
-                        className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-300 font-mono text-xs
-              ${i < current ? "bg-black border-black text-white"
-                                : i === current ? "bg-white border-black text-black"
-                                    : "bg-white border-black/20 text-black/30"}`}
-                    >
+                    <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-300 font-mono text-xs
+                        ${i < current ? "bg-black border-black text-white"
+                            : i === current ? "bg-white border-black text-black"
+                                : "bg-white border-black/20 text-black/30"}`}>
                         {i < current ? <Check size={12} /> : i + 1}
                     </div>
                     <span className={`font-mono text-[10px] tracking-widest uppercase whitespace-nowrap
-            ${i === current ? "text-black" : "text-black/30"}`}>
+                        ${i === current ? "text-black" : "text-black/30"}`}>
                         {label}
                     </span>
                 </div>
                 {i < STEPS.length - 1 && (
                     <div className={`h-px flex-1 mb-4 mx-1 transition-all duration-300
-            ${i < current ? "bg-black" : "bg-black/15"}`} />
+                        ${i < current ? "bg-black" : "bg-black/15"}`} />
                 )}
             </div>
         ))}
@@ -82,20 +78,15 @@ const StepBarber = ({ selected, onSelect }) => {
                 const isSelected = selected?.id === b.id;
 
                 return (
-                    <button
-                        key={b.id}
-                        onClick={() => onSelect(b)}
+                    <button key={b.id} onClick={() => onSelect(b)}
                         className={`group relative text-left border-2 overflow-hidden transition-all duration-200
-              ${isSelected ? "border-black" : "border-black/10 hover:border-black/40"}`}
-                    >
-                        {/* photo */}
+                            ${isSelected ? "border-black" : "border-black/10 hover:border-black/40"}`}>
                         <div className="h-36 overflow-hidden bg-zinc-100">
                             {imageUrl
                                 ? <img src={imageUrl} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                                 : <div className="w-full h-full flex items-center justify-center"><User size={32} className="text-black/20" /></div>
                             }
                         </div>
-                        {/* info */}
                         <div className="p-4 bg-white">
                             <p className="font-mono font-bold text-sm uppercase tracking-tight text-black">{name}</p>
                             <div className="flex items-center gap-1 mt-1">
@@ -103,7 +94,6 @@ const StepBarber = ({ selected, onSelect }) => {
                                 <span className="font-mono text-[11px] text-black/50">{rating.toFixed(2)}</span>
                             </div>
                         </div>
-                        {/* selected tick */}
                         {isSelected && (
                             <div className="absolute top-3 right-3 w-6 h-6 bg-black rounded-full flex items-center justify-center">
                                 <Check size={12} className="text-white" />
@@ -141,12 +131,9 @@ const StepService = ({ selected, onSelect }) => {
             {services.map(s => {
                 const isSelected = selected?.id === s.id;
                 return (
-                    <button
-                        key={s.id}
-                        onClick={() => onSelect(s)}
+                    <button key={s.id} onClick={() => onSelect(s)}
                         className={`w-full text-left border-2 p-5 transition-all duration-200 flex justify-between items-center gap-4
-              ${isSelected ? "border-black bg-black text-white" : "border-black/10 bg-white hover:border-black/40"}`}
-                    >
+                            ${isSelected ? "border-black bg-black text-white" : "border-black/10 bg-white hover:border-black/40"}`}>
                         <div className="flex-1">
                             <p className={`font-mono font-bold text-sm uppercase tracking-tight ${isSelected ? "text-white" : "text-black"}`}>
                                 {s.name ?? s.service_name}
@@ -175,10 +162,9 @@ const StepService = ({ selected, onSelect }) => {
 };
 
 // ─── step 3 — schedule ────────────────────────────────────────────────────────
-const StepSchedule = ({ barber, service, selectedSlot, onSelect }) => {
+const StepSchedule = ({ barber, service, selectedSlot, onSelect, date, onDateChange }) => {
     const [slots, setSlots] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [date, setDate] = useState(todayISO());
     const [page, setPage] = useState(1);
     const [lastPage, setLastPage] = useState(1);
 
@@ -187,7 +173,6 @@ const StepSchedule = ({ barber, service, selectedSlot, onSelect }) => {
         setLoading(true);
         axios.get(`${BASE}/barber/${barber.id}/slots`, { params: { date, page } })
             .then(r => {
-                // response: { data: { data: [...], last_page: N } }
                 const pagination = r.data.data;
                 setSlots(pagination.data ?? []);
                 setLastPage(pagination.last_page ?? 1);
@@ -196,16 +181,14 @@ const StepSchedule = ({ barber, service, selectedSlot, onSelect }) => {
             .finally(() => setLoading(false));
     }, [barber, date, page]);
 
-    // reset page when date/barber changes
     const handleDateChange = (e) => {
-        setDate(e.target.value);
+        onDateChange(e.target.value);
         setPage(1);
         onSelect(null);
     };
 
     return (
         <div className="flex flex-col gap-6">
-            {/* date picker */}
             <div className="flex flex-col gap-1">
                 <label className="font-mono text-xs text-black/50 tracking-widest uppercase">Date</label>
                 <input
@@ -217,16 +200,11 @@ const StepSchedule = ({ barber, service, selectedSlot, onSelect }) => {
                 />
             </div>
 
-            {/* slots grid */}
             <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between">
-                    <p className="font-mono text-xs text-black/50 tracking-widest uppercase">
-                        Available Slots
-                    </p>
+                    <p className="font-mono text-xs text-black/50 tracking-widest uppercase">Available Slots</p>
                     {lastPage > 1 && (
-                        <p className="font-mono text-xs text-black/30">
-                            Page {page} / {lastPage}
-                        </p>
+                        <p className="font-mono text-xs text-black/30">Page {page} / {lastPage}</p>
                     )}
                 </div>
 
@@ -244,19 +222,14 @@ const StepSchedule = ({ barber, service, selectedSlot, onSelect }) => {
                             const time = slot.start_time;
                             const isBooked = slot.status !== "available";
                             const isSelected = selectedSlot === time;
-
                             return (
-                                <button
-                                    key={slot.id}
-                                    disabled={isBooked}
-                                    onClick={() => onSelect(time)}
+                                <button key={slot.id} disabled={isBooked} onClick={() => onSelect(time)}
                                     className={`py-2 px-1 font-mono text-xs border-2 transition-all duration-150
-                    ${isBooked
+                                        ${isBooked
                                             ? "border-black/5 text-black/20 cursor-not-allowed bg-black/5"
                                             : isSelected
                                                 ? "border-black bg-black text-white"
-                                                : "border-black/15 hover:border-black text-black"}`}
-                                >
+                                                : "border-black/15 hover:border-black text-black"}`}>
                                     {time.slice(0, 5)}
                                 </button>
                             );
@@ -264,19 +237,13 @@ const StepSchedule = ({ barber, service, selectedSlot, onSelect }) => {
                     </div>
                 )}
 
-                {/* pagination — di dalam konten, jauh dari tombol next step */}
                 {lastPage > 1 && !loading && (
                     <div className="flex items-center gap-2 pt-2 border-t border-black/10 justify-center">
                         <div className="flex gap-1">
                             {Array.from({ length: lastPage }, (_, i) => i + 1).map(p => (
-                                <button
-                                    key={p}
-                                    onClick={() => setPage(p)}
+                                <button key={p} onClick={() => setPage(p)}
                                     className={`w-8 h-8 font-mono text-xs border transition-colors duration-150
-                    ${p === page
-                                            ? "bg-black text-white border-black"
-                                            : "border-black/15 hover:border-black text-black"}`}
-                                >
+                                        ${p === page ? "bg-black text-white border-black" : "border-black/15 hover:border-black text-black"}`}>
                                     {p}
                                 </button>
                             ))}
@@ -285,7 +252,6 @@ const StepSchedule = ({ barber, service, selectedSlot, onSelect }) => {
                 )}
             </div>
 
-            {/* end time preview */}
             {selectedSlot && service && (
                 <div className="border border-black/10 p-4 bg-black/[0.02]">
                     <p className="font-mono text-xs text-black/50 tracking-widest uppercase mb-2">Session Preview</p>
@@ -307,14 +273,14 @@ const StepConfirm = ({ barber, service, slot, date, notes, onNotesChange }) => {
     const endTime = slot && service ? addMinutes(slot.slice(0, 5), Number(service.duration_minutes)) : "—";
 
     const rows = [
+        { label: "User", value: user?.name ?? "—" },
         { label: "Barber", value: barberName },
         { label: "Service", value: serviceName },
         { label: "Date", value: date },
-        { label: "Start", value: slot ?? "—" },
+        { label: "Start", value: slot ? slot.slice(0, 5) : "—" },
         { label: "End", value: endTime },
         { label: "Price", value: service ? `Rp ${Number(service.price).toLocaleString("id-ID")}` : "—" },
         { label: "Duration", value: service ? `${service.duration_minutes} min` : "—" },
-        { label: "User", value: user?.name }
     ];
 
     return (
@@ -322,14 +288,13 @@ const StepConfirm = ({ barber, service, slot, date, notes, onNotesChange }) => {
             <div className="border border-black/10">
                 {rows.map((r, i) => (
                     <div key={r.label} className={`flex justify-between items-center px-5 py-3 font-mono text-sm
-            ${i % 2 === 0 ? "bg-black/[0.02]" : "bg-white"}`}>
+                        ${i % 2 === 0 ? "bg-black/[0.02]" : "bg-white"}`}>
                         <span className="text-black/40 uppercase text-xs tracking-widest">{r.label}</span>
                         <span className="text-black font-medium">{r.value}</span>
                     </div>
                 ))}
             </div>
 
-            {/* notes */}
             <div className="flex flex-col gap-2">
                 <label className="font-mono text-xs text-black/50 tracking-widest uppercase">
                     Notes <span className="normal-case">(optional)</span>
@@ -362,20 +327,10 @@ const Booking = () => {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
 
-    const canNext = [
-        !!barber,
-        !!service,
-        !!slot,
-        true,
-    ][step];
+    const canNext = [!!barber, !!service, !!slot, true][step];
 
-    const handleNext = () => {
-        if (step < STEPS.length - 1) setStep(s => s + 1);
-    };
-
-    const handleBack = () => {
-        if (step > 0) setStep(s => s - 1);
-    };
+    const handleNext = () => { if (step < STEPS.length - 1) setStep(s => s + 1); };
+    const handleBack = () => { if (step > 0) setStep(s => s - 1); };
 
     const handleConfirm = async () => {
         setLoading(true);
@@ -388,7 +343,7 @@ const Booking = () => {
                     barber_id: barber.id,
                     service_id: service.id,
                     booking_date: date,
-                    start_time: slot.slice(0, 5),                                           // "09:20:00" → "09:20"
+                    start_time: slot.slice(0, 5),
                     end_time: addMinutes(slot.slice(0, 5), Number(service.duration_minutes)),
                     notes: notes || undefined,
                 },
@@ -402,7 +357,6 @@ const Booking = () => {
         }
     };
 
-    // ── success screen ──
     if (success) {
         return (
             <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 text-center gap-6">
@@ -411,12 +365,11 @@ const Booking = () => {
                 </div>
                 <h1 className="font-mono font-black text-[32px] uppercase tracking-tight text-black">Booking Confirmed</h1>
                 <p className="font-mono text-sm text-black/50 max-w-sm">
-                    Your appointment with <strong className="text-black">{barber?.name}</strong> has been booked for <strong className="text-black">{date}</strong> at <strong className="text-black">{slot}</strong>.
+                    Your appointment with <strong className="text-black">{barber?.name}</strong> has been booked for{" "}
+                    <strong className="text-black">{date}</strong> at <strong className="text-black">{slot?.slice(0, 5)}</strong>.
                 </p>
-                <button
-                    onClick={() => navigate("/")}
-                    className="font-mono text-sm tracking-widest uppercase border-2 border-black px-10 py-3 bg-black hover:bg-white hover:text-black transition-colors duration-200"
-                >
+                <button onClick={() => navigate("/")}
+                    className="font-mono text-sm tracking-widest uppercase border-2 border-black px-10 py-3 bg-black text-white hover:bg-white hover:text-black transition-colors duration-200">
                     Back to Home
                 </button>
             </div>
@@ -425,25 +378,19 @@ const Booking = () => {
 
     return (
         <div className="min-h-screen bg-white px-4 md:px-12 py-12">
-            {/* back */}
-            <button
-                onClick={() => navigate("/")}
-                className="flex items-center gap-2 font-mono text-xs text-black/40 hover:text-black tracking-widest uppercase mb-10 transition-colors duration-200"
-            >
+            <button onClick={() => navigate("/")}
+                className="flex items-center gap-2 font-mono text-xs text-black/40 hover:text-black tracking-widest uppercase mb-10 transition-colors duration-200">
                 <ArrowLeft size={14} /> Back to Home
             </button>
 
-            {/* title */}
             <div className="mb-10 reveal">
                 <h1 className="font-mono font-black text-[36px] md:text-[56px] uppercase leading-none text-black">
                     {STEPS[step]}
                 </h1>
             </div>
 
-            {/* step bar */}
             <StepBar current={step} />
 
-            {/* step content */}
             <div className="max-w-3xl mx-auto reveal" style={{ transitionDelay: "100ms" }}>
                 {step === 0 && <StepBarber selected={barber} onSelect={b => { setBarber(b); setSlot(null); }} />}
                 {step === 1 && <StepService selected={service} onSelect={setService} />}
@@ -452,7 +399,9 @@ const Booking = () => {
                         barber={barber}
                         service={service}
                         selectedSlot={slot}
-                        onSelect={(s) => { setSlot(s); setDate(date); }}
+                        date={date}
+                        onSelect={setSlot}
+                        onDateChange={setDate}
                     />
                 )}
                 {step === 3 && (
@@ -467,35 +416,24 @@ const Booking = () => {
                 )}
             </div>
 
-            {/* error */}
             {error && (
                 <p className="font-mono text-xs text-red-500 text-center mt-6 max-w-3xl mx-auto">{error}</p>
             )}
 
-            {/* nav buttons */}
             <div className="flex justify-between items-center max-w-3xl mx-auto mt-10">
-                <button
-                    onClick={handleBack}
-                    disabled={step === 0}
-                    className="flex items-center text-black gap-2 font-mono text-xs tracking-widest uppercase border-2 border-black px-6 py-3 hover:border-black transition-colors duration-200 disabled:invisible disabled:cursor-not-allowed"
-                >
+                <button onClick={handleBack} disabled={step === 0}
+                    className="flex items-center text-black gap-2 font-mono text-xs tracking-widest uppercase border-2 border-black px-6 py-3 hover:bg-black hover:text-white transition-colors duration-200 disabled:invisible">
                     <ArrowLeft size={13} /> Back
                 </button>
 
                 {step < STEPS.length - 1 ? (
-                    <button
-                        onClick={handleNext}
-                        disabled={!canNext}
-                        className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border-2 border-black bg-black text-white px-6 py-3 hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
-                    >
+                    <button onClick={handleNext} disabled={!canNext}
+                        className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border-2 border-black bg-black text-white px-6 py-3 hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed">
                         Next <ArrowRight size={13} />
                     </button>
                 ) : (
-                    <button
-                        onClick={handleConfirm}
-                        disabled={loading}
-                        className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border-2 border-black bg-black text-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-50"
-                    >
+                    <button onClick={handleConfirm} disabled={loading}
+                        className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border-2 border-black bg-black text-white px-8 py-3 hover:bg-white hover:text-black transition-colors duration-200 disabled:opacity-50">
                         {loading ? "Submitting..." : <><Check size={13} /> Confirm Booking</>}
                     </button>
                 )}
