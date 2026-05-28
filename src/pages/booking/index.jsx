@@ -304,7 +304,7 @@ const StepConfirm = ({ barber, service, slot, date, notes, onNotesChange }) => {
                     onChange={e => onNotesChange(e.target.value)}
                     placeholder="Any special requests or notes for the barber..."
                     rows={4}
-                    className="border-2 border-black/10 focus:border-black outline-none p-4 font-mono text-sm bg-transparent resize-none transition-colors duration-200 w-full"
+                    className="text-black border-2 border-black/10 focus:border-black outline-none p-4 font-mono text-sm bg-transparent resize-none transition-colors duration-200 w-full"
                 />
             </div>
         </div>

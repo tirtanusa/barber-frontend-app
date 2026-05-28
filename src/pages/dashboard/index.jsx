@@ -5,8 +5,9 @@ import heroImage from "../../assets/hero-image.jpg";
 import OurWorks from "./OurWorks";
 import { Link } from "react-router-dom";
 import useReveal from "../../hooks/useReveal";
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -32,6 +33,7 @@ const Dashboard = () => {
   useReveal();
   const [barbers, setBarbers] = useState([])
   const [services, setServices] = useState([])
+  const { isLoggedin, user, logout } = useContext(AuthContext)
 
 
   useEffect(() => {
@@ -84,14 +86,24 @@ const Dashboard = () => {
               </Link>
             </div>
           </div>
-          <div className="flex items-center gap-8 mt-2 md:mt-4 px-4 md:px-6">
-            <Link to='/register' className="cursor-pointer nav-link">
-              Sign Up
-            </Link>
-            <Link to="/login" className="cursor-pointer nav-link text-white bg-black rounded-full w-fit px-8 py-2">
-              Login
-            </Link>
-          </div>
+          {user ? (
+            <div className="flex flex-col items-end gap-4 mx-6 my-6">
+              <p className="text-black font-inter text-3xl font-semibold">
+                Halo, <span className="underline">{user.name}</span>
+              </p>
+              <button
+                onClick={logout}
+                className="nav-link hover:border-2  text-white bg-black rounded-md px-6 py-2 text-2xl hover:border-black hover:bg-transparent hover:text-black hover:underline"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-8 mt-2 md:mt-4 px-4 md:px-6">
+              <Link to='/register' className="cursor-pointer nav-link">Sign Up</Link>
+              <Link to="/login" className="cursor-pointer nav-link text-white bg-black rounded-full w-fit px-8 py-2">Login</Link>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end flex-1 mt-17 md:mt-8 lg:mt-auto gap-8 lg:gap-4 w-full">
