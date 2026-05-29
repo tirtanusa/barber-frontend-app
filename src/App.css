@@ -17,7 +17,7 @@
   }
 
   body {
-    @apply bg-primary text-primary;
+    @apply bg-primary text-black;
   }
 
   /* Offset scroll target for fixed navbar */

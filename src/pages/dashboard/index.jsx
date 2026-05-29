@@ -92,9 +92,15 @@ const Dashboard = () => {
               <p className="text-black font-inter text-3xl font-semibold">
                 Halo, <span className="underline">{user.name}</span>
               </p>
+              <Link
+                to={user.role === "admin" ? "/admin/dashboard" : "/user/dashboard"}
+                className="nav-link border-2 border-black p-2.5 px-4 text-black hover:text-white hover:bg-black transition-colors duration-300 font-mono text-xs uppercase tracking-wider font-bold"
+              >
+                Dashboard
+              </Link>
               <button
                 onClick={logout}
-                className="nav-link border-2 p-3 text-black hover:text-white hover:bg-red-600 transition-colors duration-300"
+                className="nav-link border-2 p-3 text-black hover:text-white hover:bg-red-600 transition-colors duration-300 cursor-pointer"
               >
                 <LogOut size={20} />
               </button>

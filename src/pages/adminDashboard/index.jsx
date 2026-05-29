@@ -273,13 +273,23 @@ const AdminDashboard = () => {
                     <span>Back to Home</span>
                 </Link>
 
-                <div>
-                    <p className="font-mono text-[10px] md:text-xs tracking-widest uppercase text-black/60 mb-1">
-                        Admin Dashboard
-                    </p>
-                    <h1 className="font-mono font-black text-[40px] md:text-[64px] lg:text-[72px] uppercase leading-none text-black tracking-tight">
-                        Halo, {firstName}
-                    </h1>
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <p className="font-mono text-[10px] md:text-xs tracking-widest uppercase text-black/60 mb-1">
+                            Admin Dashboard
+                        </p>
+                        <h1 className="font-mono font-black text-[40px] md:text-[64px] lg:text-[72px] uppercase leading-none text-black tracking-tight">
+                            Halo, {firstName}
+                        </h1>
+                    </div>
+                    <div>
+                        <Link
+                            to="/admin/booking-management"
+                            className="inline-block border-2 border-black bg-black text-white hover:bg-white hover:text-black font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                        >
+                            Manage All Bookings
+                        </Link>
+                    </div>
                 </div>
             </div>
 
