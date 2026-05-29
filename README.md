@@ -109,6 +109,67 @@ barber-app/
 
 ---
 
+## ✅ Fitur yang Sudah Dibuat
+
+### 🔴 Core Features (9/9 - 100%)
+
+| # | Fitur | Target User | Keterangan |
+|---|-------|-------------|------------|
+| 1 | Login | Both | Form email & password, redirect, error handling |
+| 2 | Register | User | Form name, email, password, phone, auto-login |
+| 3 | Select Barber | User | List barber aktif + rating |
+| 4 | Select Service | User | List service + harga & durasi |
+| 5 | Select Slot | User | Date picker + slot grid |
+| 6 | Booking Confirmation | User | Review summary + confirm button |
+| 7 | Admin Dashboard | Admin | Stats revenue, booking, top barbers, latest bookings |
+| 8 | Manage Bookings | Admin | List, filter, detail, status update |
+| 9 | Transaction Process / POS | Admin | Booking info, product, cart, payment, receipt |
+
+### 🟡 Important Features (2/7)
+
+| # | Fitur | Target User | Keterangan |
+|---|-------|-------------|------------|
+| 10 | User Dashboard | User | Active booking + shortcut Book Now |
+| 11 | Booking History | User | List + status filter + cancel |
+| 22 | Landing Page | User | Hero, barber list, service table, Our Works gallery |
+
+### ⚪ Nice to Have Features (1/2)
+
+| # | Fitur | Target User | Keterangan |
+|---|-------|-------------|------------|
+| 21 | Landing Page | User | Sudah terintegrasi dengan API barber & service |
+
+---
+
+## 📋 Fitur yang Akan Dibuat
+
+### 🟡 Important Features (5 fitur tersisa)
+
+| # | Fitur | Target User | Prioritas | Keterangan |
+|---|-------|-------------|-----------|------------|
+| 12 | Booking Details | User | High | Halaman detail booking terpisah untuk user |
+| 13 | Manage Barbers | Admin | High | CRUD barber + toggle active/inactive |
+| 14 | Manage Barber Schedules | Admin | High | Kelola jadwal & generate slot otomatis |
+| 15 | Manage Services | Admin | High | CRUD layanan (nama, harga, durasi) |
+| 16 | Manage Products | Admin | High | CRUD produk + update stok |
+
+### 🔵 Complementary Features (4 fitur)
+
+| # | Fitur | Target User | Prioritas | Keterangan |
+|---|-------|-------------|-----------|------------|
+| 17 | Transaction History | User | Medium | Riwayat transaksi pelanggan |
+| 18 | Manage Transactions | Admin | Medium | List & filter semua transaksi |
+| 19 | Manage Users | Admin | Medium | CRUD user + filter berdasarkan role |
+| 20 | Profile | Both | Medium | Edit profil & change password |
+
+### ⚪ Nice to Have Features (1 fitur tersisa)
+
+| # | Fitur | Target User | Prioritas | Keterangan |
+|---|-------|-------------|-----------|------------|
+| 21 | Reports & Analytics | Admin | Low | Chart revenue, top barber/service/produk (API sudah siap) |
+
+---
+
 ## ⚙️ Cara Menjalankan
 
 ### Prasyarat
