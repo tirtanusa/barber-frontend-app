@@ -1,6 +1,7 @@
-import { Menu, X } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { Menu, X, LogOut } from "lucide-react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -12,17 +13,15 @@ const navLinks = [
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const { user, logout } = useContext(AuthContext);
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setMenuOpen(false);
       }
     };
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    if (menuOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen]);
 
@@ -30,39 +29,53 @@ const Navbar = () => {
     e.preventDefault();
     setMenuOpen(false);
     const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth" });
-    }
+    if (target) target.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <>
       <div className="flex justify-between items-center h-16 px-4 bg-neutral" ref={menuRef}>
-        <div>
-          <h1 className="font-bebasNeue text-3xl text-white">B a r b e r . i d</h1>
-        </div>
+        <h1 className="font-bebasNeue text-3xl text-white">B a r b e r . i d</h1>
 
-        {/* Desktop nav links */}
+        {/* Desktop */}
         <div className="hidden md:flex items-center gap-4">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.href}
-              href={link.href}
+              to={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
               className="font-inter text-sm text-white hover:text-secondary transition-colors duration-200 cursor-pointer"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <Link
-            to="/booking"
-            className="bg-white text-tertiary px-4 py-2 rounded-sm font-inter text-sm hover:bg-secondary hover:text-neutral transition-colors duration-200 cursor-pointer"
-          >
-            BOOK NOW
-          </Link>
+
+          {user ? (
+            <>
+              <Link
+                to="/booking"
+                className="font-inter text-sm text-white hover:text-secondary transition-colors duration-200 cursor-pointer"
+              >
+                Book Now
+              </Link>
+              <button
+                onClick={logout}
+                className="border-2 border-white/30 p-2.5 text-white hover:bg-red-600 hover:border-red-600 transition-colors duration-300"
+              >
+                <LogOut size={18} />
+              </button>
+            </>
+          ) : (
+            <Link
+              to="/login"
+              className="text-center bg-white text-tertiary px-4 py-2.5 rounded-sm font-inter text-sm font-medium hover:bg-secondary hover:text-neutral transition-colors duration-200 cursor-pointer"
+            >
+              Login
+            </Link>
+          )}
         </div>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile toggle */}
         <button
           className="md:hidden text-white"
           onClick={() => setMenuOpen((prev) => !prev)}
@@ -72,30 +85,47 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile dropdown menu */}
-      <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-neutral ${menuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
-          }`}
-      >
+      {/* Mobile dropdown */}
+      <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out bg-neutral
+        ${menuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}>
         <div className="flex flex-col px-4 pb-4 pt-2 gap-1">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="font-inter text-sm text-white py-3 px-2 hover:bg-white/10 rounded transition-colors duration-200 cursor-pointer"
+              className="font-inter text-sm text-white py-3 px-2 hover:bg-white/10 rounded transition-colors duration-200"
             >
               {link.label}
             </a>
           ))}
-          <div className="border-t border-white/20 mt-2 pt-3">
-            <a
-              href="#hero"
-              onClick={(e) => handleNavClick(e, "#hero")}
-              className="block text-center bg-white text-tertiary px-4 py-2.5 rounded-sm font-inter text-sm font-medium hover:bg-secondary hover:text-neutral transition-colors duration-200 cursor-pointer"
-            >
-              BOOK NOW
-            </a>
+
+          <div className="border-t border-white/20 mt-2 pt-3 flex flex-col gap-2">
+            {user ? (
+              <>
+                <Link
+                  to="/booking"
+                  onClick={() => setMenuOpen(false)}
+                  className="block text-center bg-white text-tertiary px-4 py-2.5 rounded-sm font-inter text-sm font-medium hover:bg-secondary hover:text-neutral transition-colors duration-200"
+                >
+                  BOOK NOW
+                </Link>
+                <button
+                  onClick={() => { logout(); setMenuOpen(false); }}
+                  className="flex items-center justify-center gap-2 border-2 border-white/30 py-2.5 text-white hover:bg-red-600 hover:border-red-600 transition-colors duration-300 font-inter text-sm"
+                >
+                  <LogOut size={16} /> Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className="block text-center bg-white text-tertiary px-4 py-2.5 rounded-sm font-inter text-sm font-medium hover:bg-secondary hover:text-neutral transition-colors duration-200"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>

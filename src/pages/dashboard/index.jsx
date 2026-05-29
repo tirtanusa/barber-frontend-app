@@ -8,6 +8,7 @@ import useReveal from "../../hooks/useReveal";
 import { useContext, useEffect, useState } from 'react';
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
+import { LogOut } from "lucide-react";
 
 const base_url = import.meta.env.VITE_BASE_URL;
 
@@ -87,21 +88,21 @@ const Dashboard = () => {
             </div>
           </div>
           {user ? (
-            <div className="flex flex-col items-end gap-4 mx-6 my-6">
+            <div className="flex items-end gap-4 mx-6 my-6">
               <p className="text-black font-inter text-3xl font-semibold">
                 Halo, <span className="underline">{user.name}</span>
               </p>
               <button
                 onClick={logout}
-                className="nav-link hover:border-2  text-white bg-black rounded-md px-6 py-2 text-2xl hover:border-black hover:bg-transparent hover:text-black hover:underline"
+                className="nav-link border-2 p-3 text-black hover:text-white hover:bg-red-600 transition-colors duration-300"
               >
-                Logout
+                <LogOut size={20} />
               </button>
             </div>
           ) : (
             <div className="flex items-center gap-8 mt-2 md:mt-4 px-4 md:px-6">
               <Link to='/register' className="cursor-pointer nav-link">Sign Up</Link>
-              <Link to="/login" className="cursor-pointer nav-link text-white bg-black rounded-full w-fit px-8 py-2">Login</Link>
+              <Link to="/login" className="cursor-pointer nav-link text-white bg-black  w-fit px-8 py-2">Login</Link>
             </div>
           )}
         </div>
