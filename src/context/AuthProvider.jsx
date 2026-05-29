@@ -18,7 +18,6 @@ export const AuthProvider = ({ children }) => {
                 Accept: "application/json",
             },
         });
-        console.log(res.data.data)
         return res.data;
     };
 
