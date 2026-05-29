@@ -5,6 +5,7 @@ import Register from "./pages/register";
 import Layout from "./components/Layout";
 import { Routes, Route } from "react-router-dom";
 import Booking from "./pages/booking";
+import UserDashboard from "./pages/userDashboard";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
         </Route>
+        <Route path="/user/dashboard" element={<UserDashboard />}></Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />}></Route>
         <Route path="/booking" element={<Booking />}></Route>
