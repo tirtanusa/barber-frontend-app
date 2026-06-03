@@ -100,7 +100,7 @@ const Dashboard = () => {
               </Link>
               <button
                 onClick={logout}
-                className="nav-link border-2 p-3 text-black hover:text-white hover:bg-red-600 transition-colors duration-300 cursor-pointer"
+                className="nav-link border-2 p-1.5 text-black hover:text-white hover:bg-red-600 transition-colors duration-300 cursor-pointer"
               >
                 <LogOut size={20} />
               </button>

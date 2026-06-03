@@ -8,7 +8,7 @@ const Footer = () => {
                 <img src={logo} alt="Logo Barber" className="h-32 md:h-40 object-contain shrink-0" />
 
                 {/* Info grid — 1 kolom di mobile, 2 kolom di md+ */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 w-full lg:w-auto">
+                <div className="text-white grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 w-full lg:w-auto">
                     {/* Contact */}
                     <div>
                         <p className="font-bold text-lg mb-4">Contact</p>
@@ -27,7 +27,7 @@ const Footer = () => {
             </div>
 
             {/* Copyright */}
-            <p className="font-azeretMono text-xs md:text-sm bg-tertiary w-full py-3 text-center border-t border-white/10">
+            <p className="text-white font-azeretMono text-xs md:text-sm bg-tertiary w-full py-3 text-center border-t border-white/10">
                 Copyright © 2024 Barber.id All rights reserved.
             </p>
         </>

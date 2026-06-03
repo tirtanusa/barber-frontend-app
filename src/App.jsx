@@ -9,6 +9,7 @@ import UserDashboard from "./pages/userDashboard";
 import AdminDashboard from "./pages/adminDashboard";
 import BookingManagement from "./pages/bookingManagement";
 import TransactionProcess from "./pages/transactionProcess";
+import ManageBarber from "./pages/ManageBarber";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/admin/dashboard" element={<AdminDashboard />}></Route>
           <Route path="/admin/booking-management" element={<BookingManagement />}></Route>
           <Route path="/admin/transaction-process" element={<TransactionProcess />}></Route>
+          <Route path="/admin/manage-barbers" element={<ManageBarber />}></Route>
         </Route>
       </Routes>
     </>
@@ -40,3 +42,4 @@ function App() {
 }
 
 export default App;
+
