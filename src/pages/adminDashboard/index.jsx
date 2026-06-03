@@ -284,6 +284,12 @@ const AdminDashboard = () => {
                     </div>
                     <div className="flex flex-wrap gap-3">
                         <Link
+                            to="/admin/manage-services"
+                            className="inline-block border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                        >
+                            Manage Services
+                        </Link>
+                        <Link
                             to="/admin/manage-barbers"
                             className="inline-block border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
                         >
