@@ -284,22 +284,52 @@ const AdminDashboard = () => {
                     </div>
                     <div className="flex flex-wrap gap-3">
                         <Link
+                            to="/admin/manage-products"
+                            className="hidden md:inline-block border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                        >
+                            Manage Products
+                        </Link>
+                        <Link
                             to="/admin/manage-services"
-                            className="inline-block border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                            className="hidden md:inline-block border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
                         >
                             Manage Services
                         </Link>
                         <Link
                             to="/admin/manage-barbers"
-                            className="inline-block border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                            className="hidden md:inline-block border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
                         >
                             Manage Barbers
                         </Link>
                         <Link
                             to="/admin/booking-management"
-                            className="inline-block border-2 border-black bg-black text-white hover:bg-white hover:text-black font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                            className="hidden md:inline-block border-2 border-black bg-black text-white hover:bg-white hover:text-black font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
                         >
                             Manage All Bookings
+                        </Link>
+                        <Link
+                            to="/admin/manage-products"
+                            className="inline-block md:hidden border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                        >
+                            <Package size={24} />
+                        </Link>
+                        <Link
+                            to="/admin/manage-services"
+                            className="inline-block md:hidden border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                        >
+                            <HandCoins size={24} />
+                        </Link>
+                        <Link
+                            to="/admin/manage-barbers"
+                            className="inline-block md:hidden border-2 border-black bg-white text-black hover:bg-black hover:text-white font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                        >
+                            <Scissors size={24} />
+                        </Link>
+                        <Link
+                            to="/admin/booking-management"
+                            className="md:hidden inline-block border-2 border-black bg-black text-white hover:bg-white hover:text-black font-mono text-xs md:text-sm font-bold uppercase tracking-wider px-6 py-3 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-none transition-all duration-200"
+                        >
+                            View All Bookings
                         </Link>
                     </div>
                 </div>
