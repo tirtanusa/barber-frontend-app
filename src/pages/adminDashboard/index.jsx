@@ -527,7 +527,7 @@ const AdminDashboard = () => {
                                                             {b.user.name.split(" ").slice(0, 2).join(" ")}
                                                         </td>
                                                         <td className="truncate max-w-[180px] px-3 py-3">
-                                                            {b.service.name}
+                                                            {b.service?.name}
                                                         </td>
                                                         <td className="px-3 py-3 font-mono">
                                                             {b.start_time.slice(0, 5)}

@@ -11,6 +11,7 @@ import BookingManagement from "./pages/bookingManagement";
 import TransactionProcess from "./pages/transactionProcess";
 import ManageBarber from "./pages/ManageBarber";
 import ManageService from "./pages/ManageService";
+import ManageProduct from "./pages/ManageProduct";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/admin/transaction-process" element={<TransactionProcess />}></Route>
           <Route path="/admin/manage-barbers" element={<ManageBarber />}></Route>
           <Route path="/admin/manage-services" element={<ManageService />}></Route>
+          <Route path="/admin/manage-products" element={<ManageProduct />}></Route>
         </Route>
       </Routes>
     </>
