@@ -89,6 +89,7 @@ const ScheduleForm = ({
     setIsSubmitting(true);
     try {
       const payload = {
+        barber_id: barberId,
         day_of_week: getDayOfWeekInt(day),
         start_time: startTime,
         end_time: endTime,
