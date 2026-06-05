@@ -3,27 +3,29 @@ import { X } from "lucide-react";
 import axios from "axios";
 
 const DAYS_OF_WEEK = [
+  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday",
 ];
 
 const DAY_MAPPING = {
+  0: "Sunday",
   1: "Monday",
   2: "Tuesday",
   3: "Wednesday",
   4: "Thursday",
   5: "Friday",
   6: "Saturday",
-  0: "Sunday"
+
 };
 
 const getDayOfWeekInt = (dayStr) => {
-  return parseInt(Object.keys(DAY_MAPPING).find(key => DAY_MAPPING[key] === dayStr)) || 1;
+  const key = Object.keys(DAY_MAPPING).find(key => DAY_MAPPING[key] === dayStr);
+  return key !== undefined ? parseInt(key) : 1;
 };
 
 const ScheduleForm = ({

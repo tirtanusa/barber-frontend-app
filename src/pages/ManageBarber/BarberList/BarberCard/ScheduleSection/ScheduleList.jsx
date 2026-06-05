@@ -8,7 +8,7 @@ const DAY_STRINGS = {
   4: "Thursday",
   5: "Friday",
   6: "Saturday",
-  7: "Sunday"
+  0: "Sunday"
 };
 
 const ScheduleList = ({ schedules, onToggleActive, onEdit, onDelete }) => {
@@ -52,11 +52,10 @@ const ScheduleList = ({ schedules, onToggleActive, onEdit, onDelete }) => {
                   <div className="flex justify-center">
                     <button
                       onClick={() => onToggleActive(schedule)}
-                      className={`inline-flex items-center gap-1 px-2 py-0.5 border font-bold uppercase text-[9px] ${
-                        isActive
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 border font-bold uppercase text-[9px] ${isActive
                           ? "bg-green-50 border-green-400 text-green-700"
                           : "bg-red-50 border-red-400 text-red-700"
-                      }`}
+                        }`}
                     >
                       {isActive ? "Active" : "Inactive"}
                     </button>
@@ -81,7 +80,7 @@ const ScheduleList = ({ schedules, onToggleActive, onEdit, onDelete }) => {
                     >
                       <Edit2 size={14} />
                     </button>
-                    
+
                     {/* Delete */}
                     <button
                       onClick={() => onDelete(schedule.id)}
