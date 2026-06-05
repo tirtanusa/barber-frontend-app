@@ -2,16 +2,15 @@ import React from "react";
 import { Edit, Trash, ToggleLeft, ToggleRight } from "lucide-react";
 
 const BarberActions = ({ barber, onEdit, onDelete, onToggleActive }) => {
-  const isActive = barber.is_active !== false;
+  const isActive = !barber.is_active;
 
   return (
     <div className="flex items-center gap-2">
       {/* Toggle Active Button */}
       <button
         onClick={() => onToggleActive(barber)}
-        className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${
-          isActive ? "bg-green-50" : "bg-red-50"
-        }`}
+        className={`p-2 border-2 border-black transition-all hover:bg-black hover:text-white ${isActive ? "bg-green-50" : "bg-red-50"
+          }`}
         title={isActive ? "Deactivate Barber" : "Activate Barber"}
       >
         {isActive ? <ToggleRight size={16} /> : <ToggleLeft size={16} />}
