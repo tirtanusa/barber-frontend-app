@@ -5,7 +5,7 @@ const statusConfig = {
     confirmed: { label: "Confirmed", bg: "bg-blue-100", text: "text-blue-700", border: "border-blue-300" },
 };
 
-const BookingHistory = ({ id, booking_date, service, barber, start_time, status }) => {
+const BookingHistory = ({ id, booking_date, service, barber, start_time, status, onViewDetail }) => {
     const s = statusConfig[status] ?? { label: status, bg: "bg-zinc-100", text: "text-zinc-500", border: "border-zinc-200" };
 
     return (
@@ -26,6 +26,13 @@ const BookingHistory = ({ id, booking_date, service, barber, start_time, status 
                     <p className="font-mono font-bold text-black text-sm uppercase tracking-tight">{service?.name ?? "—"}</p>
                     <p className="font-mono text-xs text-black">{barber?.name ?? "—"} · {start_time?.slice(0, 5)}</p>
                 </div>
+
+                <button
+                    onClick={onViewDetail}
+                    className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border border-black/20 px-4 py-2 text-black hover:bg-black hover:text-white hover:border-black transition-colors duration-200 self-end md:self-auto cursor-pointer"
+                >
+                    View Detail
+                </button>
             </div>
         </div>
     );

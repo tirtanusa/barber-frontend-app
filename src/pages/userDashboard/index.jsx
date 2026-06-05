@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import ActiveBookings from "./activeBookings";
 import BookingHistory from "./bookingsHistory";
 import axios from "axios";
+import BookingDetail from "../bookingManagement/BookingDetail";
 
 const SectionLabel = ({ color, label }) => (
     <div className="flex items-center gap-3 mb-4">
@@ -24,6 +25,7 @@ const UserDashboard = () => {
     const [activeBookings, setActiveBookings] = useState([]);
     const [bookingsHistory, setBookingsHistory] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedBooking, setSelectedBooking] = useState(null)
 
     const fetchBookings = () => {
         setLoading(true);
@@ -41,7 +43,6 @@ const UserDashboard = () => {
 
     useEffect(() => { fetchBookings(); }, []);
 
-    // ← dipanggil oleh ActiveBookings setelah cancel berhasil
     const handleCancelled = (cancelledId) => {
         const cancelled = activeBookings.find(b => b.id === cancelledId);
         setActiveBookings(prev => prev.filter(b => b.id !== cancelledId));
@@ -87,6 +88,7 @@ const UserDashboard = () => {
                                     key={b.id}
                                     {...b}
                                     onCancelled={handleCancelled}
+                                    onViewDetail={() => setSelectedBooking({ ...b, user: { ...b.user, name: user?.name } })}
                                 />
                             ))}
                         </div>
@@ -108,7 +110,7 @@ const UserDashboard = () => {
                     ) : (
                         <div className="flex flex-col gap-3">
                             {bookingsHistory.map(b => (
-                                <BookingHistory key={b.id} {...b} />
+                                <BookingHistory key={b.id} {...b} onViewDetail={() => setSelectedBooking({ ...b, user: { ...b.user, name: user?.name } })} />
                             ))}
                         </div>
                     )}
@@ -124,6 +126,12 @@ const UserDashboard = () => {
                     <CalendarPlus size={15} /> Book Now
                 </Link>
             </div>
+
+            <BookingDetail
+                isOpen={!!selectedBooking}
+                onClose={() => setSelectedBooking(null)}
+                booking={selectedBooking}
+            />
         </div>
     );
 };

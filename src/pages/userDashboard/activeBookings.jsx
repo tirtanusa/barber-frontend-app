@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
-const ActiveBookings = ({ id, barber, service, booking_date, start_time, status, onCancelled }) => {
+const ActiveBookings = ({ id, barber, service, booking_date, start_time, status, onCancelled, onViewDetail }) => {
     const { token } = useContext(AuthContext);
 
     const handleCancel = async () => {
@@ -66,8 +66,13 @@ const ActiveBookings = ({ id, barber, service, booking_date, start_time, status,
 
                 {/* cancel */}
                 <button
+                    onClick={onViewDetail}
+                    className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border border-black/20 px-4 py-2 text-black hover:bg-black hover:text-white hover:border-black transition-colors duration-200 self-end md:self-auto cursor-pointer">
+                    View Detail</button>
+
+                <button
                     onClick={handleCancel}
-                    className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border border-black/20 px-4 py-2 text-black hover:bg-black hover:text-white hover:border-black transition-colors duration-200 self-end md:self-auto"
+                    className="flex items-center gap-2 font-mono text-xs tracking-widest uppercase border border-black/20 px-4 py-2 text-black hover:bg-black hover:text-white hover:border-black transition-colors duration-200 self-end md:self-auto cursor-pointer"
                 >
                     <X size={12} /> Cancel
                 </button>

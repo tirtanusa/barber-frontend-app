@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { X, Clock, DollarSign, Calendar, User, Scissors } from "lucide-react";
 import StatusActionButtons from "./StatusActionButtons";
+import { AuthContext } from "../../context/AuthContext";
 
 const statusConfig = {
   completed: { label: "Completed", bg: "bg-green-100", text: "text-green-700", border: "border-green-300" },
@@ -11,6 +12,7 @@ const statusConfig = {
 };
 
 const BookingDetail = ({ isOpen, onClose, booking, onUpdateStatus, isProcessing }) => {
+  const { user } = useContext(AuthContext)
   if (!isOpen || !booking) return null;
 
   const s = statusConfig[booking.status] ?? {
@@ -104,14 +106,20 @@ const BookingDetail = ({ isOpen, onClose, booking, onUpdateStatus, isProcessing 
 
         {/* Footer / Actions */}
         <div className="p-6 border-t-2 border-black bg-gray-50">
-          {isProcessing ? (
-            <div className="text-center font-mono text-sm text-black">Updating Status...</div>
+          {user?.role === 'admin' ? (
+            isProcessing ? (
+              <div className="text-center font-mono text-sm text-black">Updating Status...</div>
+            ) : (
+              <StatusActionButtons
+                status={booking.status}
+                bookingId={booking.id}
+                onUpdateStatus={onUpdateStatus}
+              />
+            )
           ) : (
-            <StatusActionButtons
-              status={booking.status}
-              bookingId={booking.id}
-              onUpdateStatus={onUpdateStatus}
-            />
+            <p className="text-center font-mono text-xs text-black/40 uppercase tracking-wider">
+              View Only
+            </p>
           )}
         </div>
       </div>
