@@ -231,9 +231,6 @@ const ManageBarber = () => {
             onToggleActive={handleToggleActive}
             onEdit={handleEditBarberClick}
             onDelete={handleDeleteBarberClick}
-            schedules={schedules}
-            fetchSchedules={fetchSchedules}
-            setSchedules={setSchedules}
             showNotification={showNotification}
             token={token}
             BASE={BASE}
