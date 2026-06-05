@@ -53,6 +53,7 @@ const ScheduleSection = ({
       await axios.put(
         `${BASE}/barber/${barberId}/schedule/${schedule.id}`,
         {
+          barber_id: barberId,
           day_of_week: schedule.day_of_week,
           start_time: schedule.start_time.slice(0, 5),
           end_time: schedule.end_time.slice(0, 5),
