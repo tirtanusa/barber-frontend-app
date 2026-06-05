@@ -26,25 +26,26 @@ const ScheduleSection = ({
 
   // Fetch slots whenever targetDate changes
   React.useEffect(() => {
-    const fetchSlots = async () => {
-      if (!targetDate) return;
-      setIsLoadingSlots(true);
-      try {
-        const response = await axios.get(
-          `${BASE}/barber/${barberId}/slots?date=${targetDate}`,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        const fetchedSlots = response.data?.data?.data || response.data?.data || response.data || [];
-        setSlots(Array.isArray(fetchedSlots) ? fetchedSlots : []);
-      } catch (error) {
-        console.error("Error fetching slots:", error);
-        setSlots([]);
-      } finally {
-        setIsLoadingSlots(false);
-      }
-    };
     fetchSlots();
   }, [targetDate, barberId, token, BASE]);
+
+  const fetchSlots = async () => {
+    if (!targetDate) return;
+    setIsLoadingSlots(true);
+    try {
+      const response = await axios.get(
+        `${BASE}/barber/${barberId}/slots?date=${targetDate}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const fetchedSlots = response.data?.data?.data || response.data?.data || response.data || [];
+      setSlots(Array.isArray(fetchedSlots) ? fetchedSlots : []);
+    } catch (error) {
+      console.error("Error fetching slots:", error);
+      setSlots([]);
+    } finally {
+      setIsLoadingSlots(false);
+    }
+  };
 
   // Toggle active status for a specific schedule day
   const handleToggleScheduleActive = async (schedule) => {
@@ -114,9 +115,7 @@ const ScheduleSection = ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
       showNotification(`Slots for ${date} generated successfully!`);
-      // Trigger a refresh of the slots list
-      setTargetDate("");
-      setTimeout(() => setTargetDate(date), 0);
+      fetchSlots();
     } catch (error) {
       console.error("Error generating slots:", error);
       showNotification(

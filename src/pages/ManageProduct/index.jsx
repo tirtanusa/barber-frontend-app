@@ -38,6 +38,8 @@ const ManageProduct = () => {
   const fetchProducts = useCallback(
     async (page = 1) => {
       setIsLoading(true);
+      console.log("BASE:", BASE);                              // ← cek BASE
+      console.log("Full URL:", `${BASE}/products?page=${page}`); // ← cek full URL
       try {
         const params = { page };
         if (filters.category) params.category = filters.category;
@@ -49,10 +51,12 @@ const ManageProduct = () => {
           params,
         });
 
-        // Handle various API response shapes
+        console.log("raw response: ", response.data)
+
         const data = response.data?.data;
-        if (data?.data) {
-          // Paginated: { data: { data: [...], current_page, last_page, total } }
+
+        if (data?.data !== undefined) {
+          // Paginated response
           setProducts(Array.isArray(data.data) ? data.data : []);
           setPagination({
             currentPage: data.current_page ?? 1,
@@ -60,12 +64,17 @@ const ManageProduct = () => {
             total: data.total ?? 0,
           });
         } else if (Array.isArray(data)) {
+          // Flat array response
           setProducts(data);
           setPagination({ currentPage: 1, lastPage: 1, total: data.length });
+        } else if (Array.isArray(response.data)) {
+          // Response langsung array
+          setProducts(response.data);
+          setPagination({ currentPage: 1, lastPage: 1, total: response.data.length });
         } else {
-          const flat = response.data || [];
-          setProducts(Array.isArray(flat) ? flat : []);
-          setPagination({ currentPage: 1, lastPage: 1, total: flat.length ?? 0 });
+          // Fallback — kosong, jangan error
+          setProducts([]);
+          setPagination({ currentPage: 1, lastPage: 1, total: 0 });
         }
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -121,7 +130,14 @@ const ManageProduct = () => {
       showNotification(`Product "${selectedProduct.name}" deleted successfully.`);
       setIsDeleteConfirmOpen(false);
       setSelectedProduct(null);
-      fetchProducts(pagination.currentPage);
+
+      // Jika halaman sekarang hanya ada 1 item, kembali ke halaman sebelumnya
+      const isLastItemOnPage = products.length === 1 && pagination.currentPage > 1;
+      const targetPage = isLastItemOnPage
+        ? pagination.currentPage - 1
+        : pagination.currentPage;
+
+      await fetchProducts(targetPage); // ← await agar benar-benar selesai
     } catch (error) {
       console.error("Error deleting product:", error);
       showNotification(
@@ -137,11 +153,10 @@ const ManageProduct = () => {
       {/* Toast Notification */}
       {notification && (
         <div
-          className={`fixed top-4 right-4 z-50 px-6 py-4 border-2 border-black font-mono text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
-            notification.type === "success"
-              ? "bg-green-100 text-green-950"
-              : "bg-red-100 text-red-950"
-          }`}
+          className={`fixed top-4 right-4 z-50 px-6 py-4 border-2 border-black font-mono text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${notification.type === "success"
+            ? "bg-green-100 text-green-950"
+            : "bg-red-100 text-red-950"
+            }`}
         >
           {notification.message}
         </div>

@@ -2,24 +2,42 @@ import React, { useState } from "react";
 import { Star, ChevronDown, ChevronUp, User } from "lucide-react";
 import BarberActions from "./BarberActions";
 import ScheduleSection from "./ScheduleSection";
+import axios from "axios";
 
 const BarberCard = ({
   barber,
   onToggleActive,
   onEdit,
   onDelete,
-  schedules,
-  fetchSchedules,
-  setSchedules,
   showNotification,
   token,
   BASE,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [schedules, setSchedules] = useState([]);
+
+  const fetchSchedules = async (barberId) => {  // ← pindah ke sini
+    try {
+      const response = await axios.get(`${BASE}/barber/${barberId}/schedule`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      let scheduleData = [];
+      if (response.data?.data?.data) {
+        scheduleData = response.data.data.data;
+      } else if (response.data?.data) {
+        scheduleData = response.data.data;
+      } else {
+        scheduleData = response.data || [];
+      }
+      setSchedules(Array.isArray(scheduleData) ? scheduleData : []);
+    } catch (error) {
+      console.error("Error fetching schedules:", error);
+      setSchedules([]);
+    }
+  };
 
   const handleExpandToggle = () => {
     if (!isExpanded) {
-      // Clear previous schedules and fetch fresh data for this barber
       setSchedules([]);
       fetchSchedules(barber.id);
     }
@@ -52,11 +70,10 @@ const BarberCard = ({
                 {name}
               </h3>
               <span
-                className={`px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider border ${
-                  isActive
-                    ? "bg-green-100 border-green-400 text-green-800"
-                    : "bg-red-100 border-red-400 text-red-800"
-                }`}
+                className={`px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider border ${isActive
+                  ? "bg-green-100 border-green-400 text-green-800"
+                  : "bg-red-100 border-red-400 text-red-800"
+                  }`}
               >
                 {isActive ? "Active" : "Inactive"}
               </span>
