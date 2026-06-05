@@ -43,7 +43,7 @@ const ManageBarber = () => {
         const response = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        
+
         let fetchedData = [];
         if (response.data?.data?.data) {
           fetchedData = response.data.data.data;
@@ -84,7 +84,12 @@ const ManageBarber = () => {
       try {
         await axios.put(
           `${BASE}/barber/${barber.id}`,
-          { is_active: updatedStatus },
+          {
+            name: barber.name,
+            bio: barber.bio,
+            rating: barber.rating,
+            is_active: updatedStatus
+          },
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } catch {
@@ -178,9 +183,8 @@ const ManageBarber = () => {
     <div className="min-h-screen bg-gray-50 pb-12">
       {/* Toast Notification */}
       {notification && (
-        <div className={`fixed top-4 right-4 z-50 px-6 py-4 border-2 border-black font-mono text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
-          notification.type === "success" ? "bg-green-100 text-green-950" : "bg-red-100 text-red-950"
-        }`}>
+        <div className={`fixed top-4 right-4 z-50 px-6 py-4 border-2 border-black font-mono text-sm shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${notification.type === "success" ? "bg-green-100 text-green-950" : "bg-red-100 text-red-950"
+          }`}>
           {notification.message}
         </div>
       )}
