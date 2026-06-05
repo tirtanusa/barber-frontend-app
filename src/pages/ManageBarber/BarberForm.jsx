@@ -63,15 +63,9 @@ const BarberForm = ({ isOpen, onClose, mode, barber, onSuccess, token, BASE }) =
 
       if (mode === "add") {
         // Try /barber or /barbers path
-        try {
-          await axios.post(`${BASE}/barber`, payload, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-        } catch {
-          await axios.post(`${BASE}/barbers`, payload, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-        }
+        await axios.post(`${BASE}/barber/add-barber`, payload, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         onSuccess("Barber added successfully!");
       } else {
         try {
@@ -125,9 +119,8 @@ const BarberForm = ({ isOpen, onClose, mode, barber, onSuccess, token, BASE }) =
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className={`border-2 border-black p-3 font-mono text-sm focus:outline-none focus:bg-gray-50 transition-colors ${
-                errors.name ? "border-red-500" : ""
-              }`}
+              className={`border-2 border-black p-3 font-mono text-sm focus:outline-none focus:bg-gray-50 transition-colors ${errors.name ? "border-red-500" : ""
+                }`}
               placeholder="e.g. John Doe"
             />
             {errors.name && (
@@ -162,9 +155,8 @@ const BarberForm = ({ isOpen, onClose, mode, barber, onSuccess, token, BASE }) =
                 step="0.1"
                 value={formData.rating}
                 onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
-                className={`border-2 border-black p-3 font-mono text-sm w-32 focus:outline-none ${
-                  errors.rating ? "border-red-500" : ""
-                }`}
+                className={`border-2 border-black p-3 font-mono text-sm w-32 focus:outline-none ${errors.rating ? "border-red-500" : ""
+                  }`}
               />
               <span className="font-mono text-xs text-black/40">Use 0.1 steps</span>
             </div>
