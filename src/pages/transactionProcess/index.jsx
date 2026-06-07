@@ -225,6 +225,7 @@ const TransactionProcess = () => {
         user_id: booking.user_id,
         booking_id: booking.id,
         payment_method: paymentMethod,
+        status: "completed",
         items: cart.map((item) => ({
           product_id: item.product_id,
           quantity: item.quantity,
