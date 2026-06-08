@@ -78,7 +78,7 @@ const TransactionProcess = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = response.data.data;
-      
+
       // Validation: Status must be confirmed or in_progress to proceed
       if (data.status !== "confirmed" && data.status !== "in_progress") {
         alert("Booking status harus 'confirmed' atau 'in_progress' untuk dapat diproses.");
@@ -157,10 +157,10 @@ const TransactionProcess = () => {
         return prevCart.map((item) =>
           item.product_id === product.id
             ? {
-                ...item,
-                quantity: item.quantity + 1,
-                subtotal: (item.quantity + 1) * product.price,
-              }
+              ...item,
+              quantity: item.quantity + 1,
+              subtotal: (item.quantity + 1) * product.price,
+            }
             : item
         );
       } else {
@@ -197,10 +197,10 @@ const TransactionProcess = () => {
       prevCart.map((item) =>
         item.product_id === productId
           ? {
-              ...item,
-              quantity: newQty,
-              subtotal: newQty * item.price,
-            }
+            ...item,
+            quantity: newQty,
+            subtotal: newQty * item.price,
+          }
           : item
       )
     );
@@ -225,7 +225,6 @@ const TransactionProcess = () => {
         user_id: booking.user_id,
         booking_id: booking.id,
         payment_method: paymentMethod,
-        status: "completed",
         items: cart.map((item) => ({
           product_id: item.product_id,
           quantity: item.quantity,
@@ -236,13 +235,20 @@ const TransactionProcess = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      // 2. Update Booking Status to completed
+
+      // 2. Update Transaction Status to completed
+      const transactionStatusResponse = await axios.patch(`${BASE}/transactions/${booking.id}/status`,
+        { status: "success" },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log(transactionStatusResponse);
+      // 3. Update Booking Status to completed
       await axios.patch(
         `${BASE}/bookings/${booking.id}/status`,
         { status: "completed" },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       // Save checkout receipt data
       setReceiptData({
         booking,
